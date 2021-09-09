@@ -1,0 +1,37 @@
+{
+    "name": "ComBat-seq", 
+    "description": "Performs experimental batch correction using ComBat-seq software (https://academic.oup.com/nargab/article/2/3/lqaa078/5909519). Note that to preserve differences unrelated to technical/batch artifacts, you should also specify sample annotations like phenotype, treatment, etc. in your annotation table. Also note that this will NOT fix poorly designed experiments where experimental factors like treatment groups are confounded with batch.",
+    "inputs": {
+        "raw_counts": {
+            "description": "A table/matrix of integer counts from an RNA-seq experiment. These should NOT be normalized in any manner and hence we only accept integer counts.", 
+            "name": "Raw counts:", 
+            "required": true, 
+            "spec": {
+                "attribute_type": "DataResource", 
+                "resource_types": ["I_MTX", "RNASEQ_COUNT_MTX"], 
+                "many": false
+            }
+        },
+        "annotations": {
+            "description": "A table annotating your experimental setup. The first column has the sample names and we require a column named \"batch\". Any additional columns should speicfy other experimental factors/covariates you want to preserve (treatment groups, phenotype, etc). Without these, the batch adjustment risks removing important effects you may be interested in.", 
+            "name": "Sample annotations:", 
+            "required": true, 
+            "spec": {
+                "attribute_type": "DataResource", 
+                "resource_types": ["ANN"], 
+                "many": false
+            }
+        }
+    }, 
+    "outputs": {
+        "adjusted_counts": {
+            "spec": {
+                "attribute_type": "DataResource", 
+                "resource_type": "I_MTX",
+                "many": false
+            }
+        }
+    }, 
+    "mode": "local_docker",
+    "workspace_operation": true
+}
