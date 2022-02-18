@@ -18,7 +18,7 @@
             "required": true, 
             "spec": {
                 "attribute_type": "DataResource", 
-                "resource_types": "ANN", 
+                "resource_type": "ANN", 
                 "many": false
             }
         }
