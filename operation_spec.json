@@ -7,7 +7,7 @@
             "name": "Raw counts:", 
             "required": true, 
             "spec": {
-                "attribute_type": "DataResource", 
+                "attribute_type": "VariableDataResource", 
                 "resource_types": ["I_MTX", "RNASEQ_COUNT_MTX"], 
                 "many": false
             }
@@ -18,13 +18,14 @@
             "required": true, 
             "spec": {
                 "attribute_type": "DataResource", 
-                "resource_types": ["ANN"], 
+                "resource_type": "ANN", 
                 "many": false
             }
         }
     }, 
     "outputs": {
         "adjusted_counts": {
+            "required": true,
             "spec": {
                 "attribute_type": "DataResource", 
                 "resource_type": "I_MTX",
