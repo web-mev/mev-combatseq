@@ -78,7 +78,11 @@ covars = subset(annotations, select=-c(batch))
 # Namely, we want to catch situations where there is confounding. ComBat-seq catches this
 # and reports, but this try/catch may also get other violations.
 tryCatch({
-    adjusted_counts <- ComBat_seq(mtx, batch=batch_arr, covar_mod=covars)
+    if(dim(covars)[2] > 0){
+        adjusted_counts <- ComBat_seq(mtx, batch=batch_arr, covar_mod=covars)
+    } else {
+        adjusted_counts <- ComBat_seq(mtx, batch=batch_arr)
+    }
 }, error = function(x){
         message(x$message)
         quit(status=1)
