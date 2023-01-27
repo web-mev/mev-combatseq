@@ -19,7 +19,7 @@ setwd(working_dir)
 # Load counts
 # When loading the counts, do NOT have them change to fix R's conventions (initially)
 # so we can map them back at the end.
-count_df = read.table(RAW_COUNTS_FILE, header=T, row.names=1, check.names=F)
+count_df = read.table(RAW_COUNTS_FILE, header=T, row.names=1, check.names=F, sep='\t')
 orig_colnames = colnames(count_df)
 new_colnames = make.names(orig_colnames)
 colnames(count_df) = new_colnames
@@ -29,7 +29,7 @@ mapping_from_counts = data.frame(
     stringsAsFactors=F)
 
 # Load the annotations and change the rownames according to R's convention with make.names
-annotations = read.table(ANN_FILE, header=T, row.names=1)
+annotations = read.table(ANN_FILE, header=T, row.names=1, sep='\t')
 original_samplenames = rownames(annotations)
 altered_samplenames <- make.names(original_samplenames)
 rownames(annotations) <- altered_samplenames
