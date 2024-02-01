@@ -1,0 +1,8 @@
+name: base
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - bioconductor-sva=3.50.0
+  - r-base=4.3.2

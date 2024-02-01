@@ -1,25 +1,10 @@
-FROM r-base:4.1.2
+FROM mambaorg/micromamba
 
-RUN apt-get update && \
-  apt-get install -y libxml2-dev \
-  libcurl4-openssl-dev \
-  libssl-dev \
-  libfreetype6-dev \
-  libpng-dev \
-  libtiff5-dev \
-  libjpeg-dev \
-  libharfbuzz-dev \
-  libfribidi-dev \
-  libgit2-dev \
-  libfontconfig1-dev
+# for building the conda env
+COPY --chown=$MAMBA_USER:$MAMBA_USER environment.yml /tmp/environment.yml
+# Build the environment based on the yml file
+RUN micromamba install -y -n base -f /tmp/environment.yml \
+  && micromamba clean --all --yes
 
-# Install all software under /opt/software
-RUN mkdir -p /opt/software
-ADD combatseq.R /opt/software/
+ADD combatseq.R /usr/local/bin/
 
-# Install directly from github maintained by the developer (instead of Bioc repo)
-RUN R -e 'install.packages(c("devtools"))'
-
-RUN R -e 'library("devtools"); devtools::install_github("jtleek/sva-devel")'
-
-ENTRYPOINT ["/bin/bash"]
