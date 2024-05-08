@@ -1,1 +1,1 @@
-Rscript /usr/local/bin/combatseq.R {{raw_counts}} {{annotations}}
+Rscript /usr/local/bin/combatseq.R {{raw_counts}} {{annotations}} {{batch_variable_choice}}

@@ -12,6 +12,9 @@ RAW_COUNTS_FILE <- args[1]
 # The remaining columns should be covariates which we will NOT adjust for.
 ANN_FILE <- args[2]
 
+# the column containing the batch variable
+BATCH_VAR <- args[3]
+
 # change the working directory to co-locate with the counts file:
 working_dir <- dirname(RAW_COUNTS_FILE)
 setwd(working_dir)
@@ -38,6 +41,12 @@ mapping_from_ann = data.frame(
     row.names = altered_samplenames,
     stringsAsFactors=F)
 
+# check that the batching covariate is among the column names:
+if(!BATCH_VAR %in% colnames(annotations)){
+    message(sprintf('A column named "%s" was not found in your annotation file.', BATCH_VAR))
+    quit(status=1)
+}
+
 # Enforce that the annotations and the count matrix have the same sample names. ANY discrepancies
 # are rejected, even if the annotation file has extra samples
 if (!(setequal(new_colnames, altered_samplenames))){
@@ -62,17 +71,11 @@ v = rownames(annotations)
 count_df <- count_df[v]
 mtx=data.matrix(count_df)
 
-# We need to know which covariate corresponds with the batch, so we explicitly require a column named batch
-tryCatch({
-    batch_arr = annotations[,'batch']
-  },
-  error=function(x){
-        message('To use ComBat-seq, your annotation table needs to have a column named as "batch".')
-        quit(status=1)  
- }
-)
+# We need to know which covariate corresponds with the batch. We already checked this above
+batch_arr = annotations[, BATCH_VAR]
+
 # Extract out any other covariates
-covars = subset(annotations, select=-c(batch))
+covars = annotations[, colnames(annotations) != BATCH_VAR, drop=FALSE]
 
 # We wrap this in a try/catch since there are a bunch of things that could go wrong.
 # Namely, we want to catch situations where there is confounding. ComBat-seq catches this

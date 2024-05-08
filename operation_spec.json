@@ -17,7 +17,7 @@
             }
         },
         "annotations": {
-            "description": "A table annotating your experimental setup. The first column has the sample names and we require a column named \"batch\". Any additional columns should speicfy other experimental factors/covariates you want to preserve (treatment groups, phenotype, etc). Without these, the batch adjustment risks removing important effects you may be interested in.",
+            "description": "An annotation table describing your experimental setup. The first column has the sample names. Below, you will select which column contains the batch covariate you wish to control for. Any additional columns should specify other experimental factors/covariates you want to preserve (treatment groups, phenotype, etc). Without these, the batch adjustment risks removing important effects you may be interested in.",
             "name": "Sample annotations:",
             "required": true,
             "converter": "api.converters.data_resource.LocalDockerSingleDataResourceConverter",
@@ -25,6 +25,16 @@
                 "attribute_type": "DataResource",
                 "resource_type": "ANN",
                 "many": false
+            }
+        },
+        "batch_variable_choice": {
+            "description": "The name of the column which contains your batch variable. Any additional columns should specify other experimental factors/covariates you want to preserve (treatment groups, phenotype, etc). Without these, the batch adjustment risks removing important effects you may be interested in.",
+            "name": "Batch covariate:",
+            "required": true,
+            "converter": "api.converters.basic_attributes.StringConverter",
+            "spec": {
+                "attribute_type": "String",
+                "default": "batch"
             }
         }
     },
