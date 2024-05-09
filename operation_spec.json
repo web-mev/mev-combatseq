@@ -41,11 +41,9 @@
             "description": "(Optional) Additional column names which specify other experimental factors/covariates you want to preserve (treatment groups, phenotype, etc). Without these, the batch adjustment risks removing important effects you may be interested in. Note that ComBatSeq will detect and issue errors upon confounding and other issues that would result in an invalid model.",
             "name": "Preserved covariates (optional):",
             "required": false,
-            "converter": "api.converters.basic_attributes.StringListToCsvConverter",
+            "converter": "api.converters.basic_attributes.UnrestrictedStringListToCsvConverter",
             "spec": { 
-                "attribute_type": "OptionString",
-                "options": [],
-                "many": true
+                "attribute_type": "UnrestrictedStringList"
             }
         }
     },
