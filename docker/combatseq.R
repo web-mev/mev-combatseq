@@ -15,6 +15,9 @@ ANN_FILE <- args[2]
 # the column containing the batch variable
 BATCH_VAR <- args[3]
 
+# the other covariates which we want to preserve. Provided as a comma-delimited string
+OTHER_COVARS_CSV <- args[4]
+
 # change the working directory to co-locate with the counts file:
 working_dir <- dirname(RAW_COUNTS_FILE)
 setwd(working_dir)
@@ -47,6 +50,14 @@ if(!BATCH_VAR %in% colnames(annotations)){
     quit(status=1)
 }
 
+OTHER_COVARS = strsplit(OTHER_COVARS_CSV, ',')[[1]]
+for(x in OTHER_COVARS){
+    if(!x %in% colnames(annotations)){
+        message(sprintf('A column named "%s" was not found in your annotation file.', x))
+        quit(status=1)
+    }
+}
+
 # Enforce that the annotations and the count matrix have the same sample names. ANY discrepancies
 # are rejected, even if the annotation file has extra samples
 if (!(setequal(new_colnames, altered_samplenames))){
@@ -75,7 +86,7 @@ mtx=data.matrix(count_df)
 batch_arr = annotations[, BATCH_VAR]
 
 # Extract out any other covariates
-covars = annotations[, colnames(annotations) != BATCH_VAR, drop=FALSE]
+covars = annotations[, OTHER_COVARS, drop=FALSE]
 
 # We wrap this in a try/catch since there are a bunch of things that could go wrong.
 # Namely, we want to catch situations where there is confounding. ComBat-seq catches this

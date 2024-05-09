@@ -17,7 +17,7 @@
             }
         },
         "annotations": {
-            "description": "An annotation table describing your experimental setup. The first column has the sample names. Below, you will select which column contains the batch covariate you wish to control for. Any additional columns should specify other experimental factors/covariates you want to preserve (treatment groups, phenotype, etc). Without these, the batch adjustment risks removing important effects you may be interested in.",
+            "description": "An annotation table describing your experimental setup. The first column has the sample names. Below, you will select which column contains the batch covariate you wish to control for. Additionally, you can specify other experimental factors/covariates you want to preserve (treatment groups, phenotype, etc). Without specifying these, the batch adjustment risks removing important effects you may be interested in.",
             "name": "Sample annotations:",
             "required": true,
             "converter": "api.converters.data_resource.LocalDockerSingleDataResourceConverter",
@@ -28,13 +28,24 @@
             }
         },
         "batch_variable_choice": {
-            "description": "The name of the column which contains your batch variable. Any additional columns should specify other experimental factors/covariates you want to preserve (treatment groups, phenotype, etc). Without these, the batch adjustment risks removing important effects you may be interested in.",
+            "description": "The name of the column which contains your batch variable.",
             "name": "Batch covariate:",
             "required": true,
             "converter": "api.converters.basic_attributes.StringConverter",
             "spec": {
                 "attribute_type": "String",
                 "default": "batch"
+            }
+        },
+        "other_covariates": {
+            "description": "(Optional) Additional column names which specify other experimental factors/covariates you want to preserve (treatment groups, phenotype, etc). Without these, the batch adjustment risks removing important effects you may be interested in. Note that ComBatSeq will detect and issue errors upon confounding and other issues that would result in an invalid model.",
+            "name": "Preserved covariates (optional):",
+            "required": false,
+            "converter": "api.converters.basic_attributes.StringListToCsvConverter",
+            "spec": { 
+                "attribute_type": "OptionString",
+                "options": [],
+                "many": true
             }
         }
     },
