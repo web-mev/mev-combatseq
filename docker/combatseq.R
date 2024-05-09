@@ -50,12 +50,16 @@ if(!BATCH_VAR %in% colnames(annotations)){
     quit(status=1)
 }
 
-OTHER_COVARS = strsplit(OTHER_COVARS_CSV, ',')[[1]]
-for(x in OTHER_COVARS){
-    if(!x %in% colnames(annotations)){
-        message(sprintf('A column named "%s" was not found in your annotation file.', x))
-        quit(status=1)
+if(!is.na(OTHER_COVARS_CSV)){
+    OTHER_COVARS = strsplit(OTHER_COVARS_CSV, ',')[[1]]
+    for(x in OTHER_COVARS){
+        if(!x %in% colnames(annotations)){
+            message(sprintf('A column named "%s" was not found in your annotation file.', x))
+            quit(status=1)
+        }
     }
+} else {
+    OTHER_COVARS = NA
 }
 
 # Enforce that the annotations and the count matrix have the same sample names. ANY discrepancies
@@ -86,13 +90,18 @@ mtx=data.matrix(count_df)
 batch_arr = annotations[, BATCH_VAR]
 
 # Extract out any other covariates
-covars = annotations[, OTHER_COVARS, drop=FALSE]
+if(!is.na(OTHER_COVARS)){
+    covars = annotations[, OTHER_COVARS, drop=FALSE]
+    has_covars = TRUE
+} else {
+    has_covars = FALSE
+}
 
 # We wrap this in a try/catch since there are a bunch of things that could go wrong.
 # Namely, we want to catch situations where there is confounding. ComBat-seq catches this
 # and reports, but this try/catch may also get other violations.
 tryCatch({
-    if(dim(covars)[2] > 0){
+    if(has_covars){
         adjusted_counts <- ComBat_seq(mtx, batch=batch_arr, covar_mod=covars)
     } else {
         adjusted_counts <- ComBat_seq(mtx, batch=batch_arr)
