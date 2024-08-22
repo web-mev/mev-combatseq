@@ -6,7 +6,7 @@
             "description": "A table/matrix of integer counts from an RNA-seq experiment. These should NOT be normalized in any manner and hence we only accept integer counts.",
             "name": "Raw counts:",
             "required": true,
-            "converter": "api.converters.data_resource.LocalDockerSingleVariableDataResourceConverter",
+            "converter": "api.converters.data_resource.ECSSingleVariableDataResourceConverter",
             "spec": {
                 "attribute_type": "VariableDataResource",
                 "resource_types": [
@@ -20,7 +20,7 @@
             "description": "An annotation table describing your experimental setup. The first column has the sample names. Below, you will select which column contains the batch covariate you wish to control for. Additionally, you can specify other experimental factors/covariates you want to preserve (treatment groups, phenotype, etc). Without specifying these, the batch adjustment risks removing important effects you may be interested in.",
             "name": "Sample annotations:",
             "required": true,
-            "converter": "api.converters.data_resource.LocalDockerSingleDataResourceConverter",
+            "converter": "api.converters.data_resource.ECSSingleDataResourceConverter",
             "spec": {
                 "attribute_type": "DataResource",
                 "resource_type": "ANN",
@@ -50,7 +50,7 @@
     "outputs": {
         "adjusted_counts": {
             "required": true,
-            "converter": "api.converters.data_resource.LocalDockerSingleDataResourceConverter",
+            "converter": "api.converters.data_resource.ECSSingleDataResourceConverter",
             "spec": {
                 "attribute_type": "DataResource",
                 "resource_type": "I_MTX",
@@ -58,6 +58,6 @@
             }
         }
     },
-    "mode": "local_docker",
+    "mode": "ecs",
     "workspace_operation": true
 }

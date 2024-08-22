@@ -1,1 +1,1 @@
-Rscript /usr/local/bin/combatseq.R {{raw_counts}} {{annotations}} {{batch_variable_choice}} {% if other_covariates %} "{{other_covariates}}" {% endif %}
+Rscript /usr/local/bin/combatseq.R {{raw_counts}} {{annotations}} "{{batch_variable_choice}}" {% if other_covariates %} "{{other_covariates}}" {% endif %}
